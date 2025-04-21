@@ -5,6 +5,7 @@ import { collection, query, where, onSnapshot, orderBy, deleteDoc, doc,
   updateDoc, } from 'firebase/firestore';
 import { db } from '../_utils/firebase';
 import { useUserAuth } from '../_utils/auth-context';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function TaskList() {
   const { user } = useUserAuth();
@@ -43,6 +44,7 @@ export default function TaskList() {
 
     try {
       await deleteDoc(doc(db, 'tasks', taskId));
+      toast.success('Task deleted');
     } catch (err) {
       console.error('Error deleting task:', err);
     }
@@ -54,6 +56,7 @@ export default function TaskList() {
       await updateDoc(taskRef, {
         completed: !currentStatus,
       });
+      toast.success('Task status updated');
     } catch (err) {
       console.error('Error updating task status:', err);
     }
@@ -82,6 +85,7 @@ export default function TaskList() {
         dueDate: editDueDate,
       });
       handleCancelEdit(); // Close form and clear fields
+      toast.success('✅ Task updated!');
     } catch (err) {
       console.error('Error updating task:', err);
     }
