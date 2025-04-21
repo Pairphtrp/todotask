@@ -131,7 +131,7 @@ export default function TaskList() {
         </div>
   
         <div className="flex justify-center mb-4">
-          <label className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-gray-500">
             <span className="text-sm">Sort by:</span>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="px-2 py-1 rounded border text-sm">
               <option value="createdAt">Created Time</option>

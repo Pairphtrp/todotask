@@ -34,30 +34,30 @@ export default function TaskForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
-      <h2 className="text-xl font-semibold">Add a Task</h2>
+      <h2 className="text-xl font-semibold">Add your Task</h2>
       <input
         type="text"
         placeholder="Task title"
-        className="w-full px-4 py-2 border rounded"
+        className="w-full text-gray-500 px-4 py-2 border rounded"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
       <input
         type="date"
-        className="w-full px-4 py-2 border rounded"
+        className="w-full text-gray-500 px-4 py-2 border rounded"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
         required
       />
       <select
-        className="w-full px-4 py-2 border rounded"
+        className="w-full px-4 text-gray-500 py-2 border rounded"
         value={priority}
         onChange={(e) => setPriority(e.target.value)}
       >
         <option value="low">Low</option>
         <option value="normal">Normal</option>
-        <option value="high">High</option>
+        <option value="High">Urgent</option>
       </select>
       <button
         type="submit"
@@ -68,4 +68,3 @@ export default function TaskForm() {
     </form>
   );
 }
-// Compare this snippet from app/dashboard/page.js:
