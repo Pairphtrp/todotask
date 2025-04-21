@@ -7,6 +7,7 @@ import { db } from '../_utils/firebase';
 import { useUserAuth } from '../_utils/auth-context';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 export default function TaskList() {
     const { user } = useUserAuth();
     const [tasks, setTasks] = useState([]);
@@ -82,7 +83,7 @@ export default function TaskList() {
           priority: editPriority,
           dueDate: editDueDate,
         });
-        handleCancelEdit(); // Close form and clear fields
+        handleCancelEdit();
       } catch (err) {
         console.error('Error updating task:', err);
       }
@@ -103,6 +104,23 @@ export default function TaskList() {
         if (sortBy === 'createdAt') return b.createdAt?.seconds - a.createdAt?.seconds;
         return 0;
       });
+  
+    const isOverdue = (dueDate, completed) => {
+    if (!dueDate || completed) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate + 'T00:00:00');
+    return due < today;
+  };
+  
+  const isDueToday = (dueDate, completed) => {
+    if (!dueDate || completed) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const due = new Date(dueDate + 'T00:00:00');
+    due.setHours(0, 0, 0, 0);
+    return due.getTime() === today.getTime();
+  };
   
     return (
       <div className="mt-8 space-y-4">
@@ -148,6 +166,16 @@ export default function TaskList() {
                     <h3 className="text-lg font-semibold">{task.title}</h3>
                     <p className="text-sm text-gray-600">Due: {task.dueDate}</p>
                     <p className="text-sm text-gray-500">Priority: {task.priority}</p>
+                    {isOverdue(task.dueDate, task.completed) && (
+    <div className="bg-red-100 text-red-700 px-3 py-1 mt-1 rounded text-xs font-semibold inline-flex items-center gap-1">
+      <span>⚠</span> <span>Overdue</span>
+    </div>
+  )}
+  {isDueToday(task.dueDate, task.completed) && (
+    <div className="bg-yellow-100 text-yellow-700 px-3 py-1 mt-1 rounded text-xs font-semibold inline-flex items-center gap-1">
+      <span>📅</span> <span>Due Today</span>
+    </div>
+  )}
                   </>
                 )}
               </div>
