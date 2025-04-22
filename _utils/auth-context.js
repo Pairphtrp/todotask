@@ -1,9 +1,11 @@
 "use client";
 
-import { useContext, createContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import {
-  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
+  signInWithPopup,
   onAuthStateChanged,
   GithubAuthProvider,
 } from "firebase/auth";
@@ -14,6 +16,16 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
+  // Email/Password
+  const signIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const register = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  // GitHub
   const gitHubSignIn = () => {
     const provider = new GithubAuthProvider();
     return signInWithPopup(auth, provider);
@@ -31,12 +43,10 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, gitHubSignIn, logOut }}>
+    <AuthContext.Provider value={{ user, signIn, register, gitHubSignIn, logOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useUserAuth = () => {
-  return useContext(AuthContext);
-};
+export const useUserAuth = () => useContext(AuthContext);
