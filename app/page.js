@@ -3,7 +3,7 @@ import { useUserAuth } from '../_utils/auth-context';
 import Link from 'next/link';
 
 export default function Home() {
-  const { user, gitHubSignIn, firebaseSignOut } = useUserAuth();
+  const { user, gitHubSignIn, logOut } = useUserAuth();
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center gap-6 p-6">
@@ -24,7 +24,7 @@ export default function Home() {
             Welcome, {user.displayName || user.email}!
           </h1>
           <button
-            onClick={firebaseSignOut}
+            onClick={logOut}
             className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600"
           >
             Log Out
