@@ -71,7 +71,7 @@ export default function TaskForm() {
       >
         <option value="low">Low</option>
         <option value="normal">Normal</option>
-        <option value="high">Urgent</option>
+        <option value="high">High</option>
       </select>
 
       <button
