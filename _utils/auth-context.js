@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   GithubAuthProvider,
+  updatePassword,
 } from "firebase/auth";
 import { auth } from './firebase';
 
@@ -35,6 +36,15 @@ export const AuthContextProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  // Change Password
+  const changePassword = (newPassword) => {
+    if (auth.currentUser) {
+      return updatePassword(auth.currentUser, newPassword);
+    } else {
+      throw new Error("No user is currently signed in");
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -43,10 +53,18 @@ export const AuthContextProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, register, gitHubSignIn, logOut }}>
+    <AuthContext.Provider value={{
+      user,
+      signIn,
+      register,
+      gitHubSignIn,
+      logOut,
+      changePassword, // ✅ Added here
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useUserAuth = () => useContext(AuthContext);
+
